@@ -60,7 +60,7 @@ cd -
     npm run docs:dev
 ```
 
-Доступ до локально опублікованої версії [http://localhost:3030](http://localhost:3030)
+Доступ до льно опублікованої версії [http://localhost:3030](http://localhost:3030)
 
 
 ## Додаткова інформація
