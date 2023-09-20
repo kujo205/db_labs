@@ -9,7 +9,7 @@ footer: "ECL 2.0 Licensed | Copyright © [2023] [Ivan Kuts]"
 
 **Виконали:**
 
-1. *студент 2-го курсу, групи ІМ-22*<span padding-right:5em></span> **[Іван Куц](https://telegram.me/kujo005)**
+1. *студент 2-го курсу, групи ІМ-228*<span padding-right:5em></span> **[Іван Куц](https://telegram.me/kujo005)**
 2. *студент 2-го курсу, групи ІМ-22*<span padding-right:5em></span> **[Ігор Новиков](https://telegram.me/igaryakqwe)**
 3. *студент 2-го курсу, групи ІМ-22*<span padding-right:5em></span> **[Максим Сачко](https://telegram.me/BL_OD)**
 4. *студент 2-го курсу, групи ІМ-22*<span padding-right:5em></span> **[Антон Довженко](https://telegram.me/I0_Jesus_0l)**
