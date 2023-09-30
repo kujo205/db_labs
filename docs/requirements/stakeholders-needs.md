@@ -21,7 +21,8 @@
 
 ### Посилання
 
-*[Розділ містить повний список всіх документів, про які згадується.]*
+- <a href="https://1202performance.wordpress.com/atricles/how-to-write-performance-requirements-with-example/" target="_blank">Продуктивність</a>
+- <a href="https://www.browserstack.com/guide/how-to-improve-software-quality" target="_blank">Експлуатаційна придатність</a>
 
 
 ## Короткий зміст
