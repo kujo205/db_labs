@@ -21,8 +21,9 @@
 
 ### Посилання
 
-- <a href="https://1202performance.wordpress.com/atricles/how-to-write-performance-requirements-with-example/" target="_blank">Продуктивність</a>
-- <a href="https://www.browserstack.com/guide/how-to-improve-software-quality" target="_blank">Експлуатаційна придатність</a>
+- [Надійність](https://owasp.org/www-project-top-ten/)
+- [Продуктивність](https://1202performance.wordpress.com/atricles/how-to-write-performance-requirements-with-example/)
+- [Експлуатаційна придатність](https://www.browserstack.com/guide/how-to-improve-software-quality)
 
 
 ## Короткий зміст
@@ -80,7 +81,10 @@
 
 ## Надійність
 
-*[Reliability (вимоги до надійності)]*
+- Конфіденційність данних користувачів;
+- Захист від DDoS-атак;
+- Постійне оновлення та моніторинг;
+- Резервне копіювання та відновлення;
 
 ## Продуктивність
 
