@@ -21,10 +21,10 @@
 
 ### Посилання
 
+- [Практичність](https://www.trustradius.com/products/surveymonkey/reviews?qs=pros-and-cons#features-scorecard)
 - [Надійність](https://owasp.org/www-project-top-ten/)
 - [Продуктивність](https://1202performance.wordpress.com/atricles/how-to-write-performance-requirements-with-example/)
 - [Експлуатаційна придатність](https://www.browserstack.com/guide/how-to-improve-software-quality)
-
 
 ## Короткий зміст
 
@@ -77,7 +77,10 @@
 
 ## Практичність
 
-*[Usability (вимоги до зручності роботи)]*
+- Інтуїтивно зрозумілий інтерфейс користувача;
+- Зручні засоби звітування та аналізу опитувань;
+- Швидкість і продуктивність у використанні;
+- Онлайн підтримка;
 
 ## Надійність
 
