@@ -31,7 +31,7 @@
 
     usecase "<b>Survey management</b>\n Управління опитуваннями" as SM
 
-    Expert -u-|> User
+    Client -u-|> User
     Client -d-> SM
 
 @enduml
