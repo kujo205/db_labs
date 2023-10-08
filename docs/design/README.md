@@ -25,6 +25,7 @@ entity Client.id <<NUMBER>>
 
 entity Answers <<ENTITY>> #33FFEC
 entity AnswersField <<OBJECT>>
+entity Expert.Id <<NUMBER>>
 
 entity Question <<ENTITY>> #33FFEC
 entity QuestionId <<NUMBER>>
@@ -32,14 +33,15 @@ entity QuestionType <<TEXT>>
 entity QuestionText <<TEXT>>
 
 entity Poll <<ENTITY>> #33FFEC
-entity PollId <<NUMBER>> 
+entity PollId <<NUMBER>>
+entity Client.Id <<NUMBER>>
 
 User "1" -- "1" Client
 User "1" -- "1" Expert
 
 Poll "0..*" -u-* "1" Client
 Poll "1" -- "0..1" Answers
-Poll  -- Client.id
+Client.Id -u-* Poll
 
 Question "1..*" -u-* "1" Poll
 QuestionId -u-* Question
@@ -56,7 +58,7 @@ Specialty "1..*" -- "1" Expert
 
 PollId -u-* Answers
 AnswersField -u-* Answers
-Expert.id -u-* Answers
+Expert.Id -u-* Answers
 Answers "0..*" -u-* "1" Expert
 
 Client.id -u-* Client
