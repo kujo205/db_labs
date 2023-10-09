@@ -85,7 +85,7 @@ User.id -u-* User
     id:INT
     age:INT
     money_earned:INT
-    job:TEXT
+    gender:TEXT
   }
 
   entity Client <<ENTITY>>{
@@ -103,7 +103,7 @@ User.id -u-* User
   }
   
   entity Poll <<ENTITY>>{
-    pollId:INT
+    clientId:INT
   }
   
   entity Question <<ENTITY>>{
@@ -118,7 +118,7 @@ User.id -u-* User
   Expert "1" -d-> "1..*" Specialty
   Expert "1" <-d- "0..*" Answers
   Client "1" <-d- "0..*" Poll
-  Question "1..*"-l-> "1" Poll
+  Question "1..*"-d-> "1" Poll
   Answers "0..1" <-u- "1" Poll
   
 @enduml
