@@ -5,122 +5,168 @@
 ## Модель бізнес-об'єктів 
 
 @startuml
-entity User <<ENTITY>> #33FFEC
-entity User.name <<TEXT>>
-entity User.password <<TEXT>>
-entity User.mail <<TEXT>>
-entity User.id <<NUMBER>>
 
-entity Expert <<ENTITY>> #33FFEC
-entity Expert.gender <<TEXT>>
-entity Expert.age <<NUMBER>>
-entity Expert.id <<NUMBER>>
-entity Expert.money_earned <<NUMBER>>
+  entity User <<ENTITY>> #33FFEC
+  entity User.name <<TEXT>>
+  entity User.password <<TEXT>>
+  entity User.mail <<TEXT>>
+  entity User.id <<NUMBER>>
+  entity User.gender <<TEXT>>
+  entity User.age <<NUMBER>>
+  entity User.earnedMoney <<NUMBER>>
 
-entity Specialty <<ENTITY>> #33FFEC
-entity Specialty.name <<TEXT>> 
+  entity Qualification <<ENTITY>> #33FFEC
+  entity Qualification.id <<NUMBER>>
+  entity Qualification.level <<NUMBER>>
 
-entity Client <<ENTITY>> #33FFEC
-entity Client.id <<NUMBER>>
+  entity Specialty <<ENTITY>> #33FFEC
+  entity Specialty.id <<NUMBER>>
+  entity Specialty.name <<TEXT>>
 
-entity Answers <<ENTITY>> #33FFEC
-entity Answers.field <<OBJECT>>
-entity Answers.expertId <<NUMBER>>
-entity Answers.pollId <<NUMBER>>
+  entity Grant <<ENTITY>> #33FFEC
+  entity Grant.id <<NUMBER>>
+  entity Grant.assignedAt <<Date>>
 
-entity Question <<ENTITY>> #33FFEC
-entity Question.id <<NUMBER>>
-entity Question.type <<TEXT>>
-entity Question.text <<TEXT>>
+  entity Role <<ENTITY>> #33FFEC
+  entity Role.id <<NUMBER>>
+  entity Role.name <<TEXT>>
 
-entity Poll <<ENTITY>> #33FFEC
-entity Poll.clientId <<NUMBER>>
+  entity Poll <<ENTITY>> #33FFEC
+  entity Poll.id <<NUMBER>>
+  entity Poll.title <<TEXT>>
+  entity Poll.description <<TEXT>>
 
-User "1" -- "1" Client
-User "1" -- "1" Expert
+  entity Question <<ENTITY>> #33FFEC
+  entity Question.id <<NUMBER>>
+  entity Question.type <<TEXT>>
+  entity Question.text <<TEXT>>
 
-Poll "0..*" -u-* "1" Client
-Poll "1" -- "0..1" Answers
-Poll.clientId -u-* Poll
+  entity Answer <<ENTITY>> #33FFEC
+  entity Answer.id <<NUMBER>>
+  entity Answer.field <<OBJECT>>
 
-Question "1..*" -u-* "1" Poll
-Question.id -u-* Question
-Question.type -u-* Question 
-Question.text -u-* Question 
+  User.name -d-* User 
+  User.password -d-* User
+  User.mail -d-* User
+  User.id -d-* User
+  User.age -d-* User
+  User.gender -d-* User
+  User.earnedMoney -d-* User
 
-Specialty.name -u-* Specialty
+  User "1,1" -- "0,*" Grant
+  User "1,1" -- "0,*" Qualification
 
-Expert.age -u-* Expert
-Expert.id -u-* Expert
-Expert.gender -u-* Expert
-Expert.money_earned -u-* Expert
-Specialty "1..*" -- "1" Expert
+  Grant.id --* Grant
+  Grant.assignedAt --* Grant 
 
-Answers.pollId -u-* Answers
-Answers.field -u-* Answers
-Answers.expertId -u-* Answers
-Answers "0..*" -u-* "1" Expert
+  Grant "1,1" -- "0,*" Role
 
-Client.id -u-* Client
+  Qualification.id -u-* Qualification
+  Qualification.level -u-* Qualification
 
-User.name -u-* User 
-User.password -u-* User
-User.mail -u-* User
-User.id -u-* User
+  Qualification "0,*" -- "1,1" Specialty
+
+  Specialty.id -u-* Specialty
+  Specialty.name -u-* Specialty
+
+  Role.id -u-* Role
+  Role.name -u-* Role
+
+  Poll "0,*" -u-* "1,1" Grant
+  Poll.id -u-* Poll
+  Poll.title -u-* Poll
+  Poll.description -u-* Poll
+
+  Question "0,*" -u-* "1,1" Poll:poll
+  Question.id -u-* Question
+  Question.type -u-* Question 
+  Question.text -u-* Question
+
+  Question "1,1" -u- "0,*" Answer
+
+  Answer.id -u-* Answer
+  Answer.field -u-* Answer
+
+  Answer "0,*" -u-* "1,1" Grant
 
 @enduml
 
 ## ER-модель
 
-@startuml
-
-  entity User <<ENTITY>> {
-    id:INT
-    password:TEXT
-    name:TEXT
+@startuml 
+ 
+  entity User <<ENTITY>> { 
+    id:INT 
+    password:TEXT 
+    name:TEXT 
     mail:TEXT
-  }
-  
-  entity Expert <<ENTITY>>{
-    id:INT
     age:INT
-    money_earned:INT
     gender:TEXT
+    earnedMoney:INT
   }
 
-  entity Client <<ENTITY>>{
-    id:INT
+  entity Grant <<ENTITY>> { 
+    id:INT 
+    assignedAt:Date 
+  } 
+
+  entity Role <<ENTITY>> { 
+    id:INT 
+    name:TEXT ("client", "expert") 
   }
 
-  entity Specialty <<ENTITY>>{
-    name:TEXT
+  entity Specialty <<ENTITY>> { 
+    id:INT 
+    name:TEXT 
+  } 
+
+  entity Qualification <<ENTITY>>{ 
+    id:INT 
+    level:NUMBER (1,2,3) 
   }
 
-  entity Answers <<ENTITY>> {
-    expertId:INT
-    pollId:INT
-    field:Object
-  }
-  
-  entity Poll <<ENTITY>>{
-    clientId:INT
-  }
-  
-  entity Question <<ENTITY>>{
-    id:INT
-    type:TEXT
-    text:TEXT
+  entity Answer <<ENTITY>> { 
+    id:INT 
+    field:Object 
   }
 
+  entity Poll <<ENTITY>>{ 
+    id:INT 
+    title:TEXT 
+    description:TEXT 
+  } 
 
-  User "1" -d-> "1" Expert
-  User "1" -d-> "1" Client
-  Expert "1" -d-> "1..*" Specialty
-  Expert "1" <-d- "0..*" Answers
-  Client "1" <-d- "0..*" Poll
-  Question "1..*"-d-> "1" Poll
-  Answers "0..1" <-u- "1" Poll
-  
+  entity Question <<ENTITY>>{ 
+    id:INT 
+    type:TEXT 
+    text:TEXT 
+  }
+
+  entity Action <<ENTITY>>{ 
+    id:INT 
+    date:Date 
+  }
+
+  entity State <<ENTITY>>{ 
+    id:INT 
+    type:TEXT (start, stop, submit answers, change poll, show answers)
+    text:TEXT 
+  }
+
+  Qualification "0,*" -l-> "1,1" User 
+  Qualification "0,*" --> "1,1" Specialty 
+    
+    
+  Grant "0,*" -u-> "1,1" User 
+  Grant "0,*" -r-> "1,1" Role 
+  Grant "1,1" <-l- "0,*" Answer 
+  Grant "1,1" <-l- "0,*" Poll 
+  Question "0,*" -d-> "1,1" Poll: pool 
+  Answer "0,*" -l-> "1,1" Question 
+  Action "0,*" -u-> "1,1" Poll
+  Action "0,*" -u-> "1,1" Grant
+  Action "0,*" -r-> "1,1" State
+
 @enduml
 
 - реляційна схема
