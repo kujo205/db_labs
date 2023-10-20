@@ -169,5 +169,6 @@
 
 @enduml
 
-- реляційна схема
+## Реляційна схема
+![image](https://github.com/kujo205/db_labs/assets/45692117/96e400ad-3f8c-4bf4-8e0b-f9869906c3fa)
 
