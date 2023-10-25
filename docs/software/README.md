@@ -10,19 +10,19 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema opinio
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema opinio
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `opinio` DEFAULT CHARACTER SET utf8 ;
+USE `opinio` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`Role`
+-- Table `opinio`.`Role`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Role` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Role` (
   `id` INT NOT NULL,
   `name` TINYTEXT NOT NULL,
   PRIMARY KEY (`id`))
@@ -30,9 +30,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`User`
+-- Table `opinio`.`User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`User` (
+CREATE TABLE IF NOT EXISTS `opinio`.`User` (
   `id` INT NOT NULL,
   `mail` MEDIUMTEXT NOT NULL,
   `password` MEDIUMTEXT NOT NULL,
@@ -45,9 +45,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Grant`
+-- Table `opinio`.`Grant`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Grant` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Grant` (
   `id` INT ZEROFILL NOT NULL,
   `assignedAt` DATE NOT NULL,
   `Role_id` INT NOT NULL,
@@ -57,21 +57,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Grant` (
   INDEX `fk_Grant_User1_idx` (`User_id` ASC) VISIBLE,
   CONSTRAINT `fk_Grant_Role1`
     FOREIGN KEY (`Role_id`)
-    REFERENCES `mydb`.`Role` (`id`)
+    REFERENCES `opinio`.`Role` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Grant_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `mydb`.`User` (`id`)
+    REFERENCES `opinio`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Poll`
+-- Table `opinio`.`Poll`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Poll` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Poll` (
   `id` INT NOT NULL,
   `title` MEDIUMTEXT NOT NULL,
   `description` LONGTEXT NOT NULL,
@@ -80,16 +80,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Poll` (
   INDEX `fk_Poll_Grant1_idx` (`Grant_id` ASC) VISIBLE,
   CONSTRAINT `fk_Poll_Grant1`
     FOREIGN KEY (`Grant_id`)
-    REFERENCES `mydb`.`Grant` (`id`)
+    REFERENCES `opinio`.`Grant` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Question`
+-- Table `opinio`.`Question`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Question` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Question` (
   `id` INT NOT NULL,
   `type` MEDIUMTEXT NOT NULL,
   `text` LONGTEXT NOT NULL,
@@ -98,16 +98,16 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Question` (
   INDEX `fk_Question_Poll1_idx` (`Poll_id` ASC) VISIBLE,
   CONSTRAINT `fk_Question_Poll1`
     FOREIGN KEY (`Poll_id`)
-    REFERENCES `mydb`.`Poll` (`id`)
+    REFERENCES `opinio`.`Poll` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Answer`
+-- Table `opinio`.`Answer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Answer` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Answer` (
   `id` INT NOT NULL,
   `field` BLOB NOT NULL,
   `Question_id` INT NOT NULL,
@@ -117,21 +117,21 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Answer` (
   INDEX `fk_Answer_Grant1_idx` (`Grant_id` ASC) VISIBLE,
   CONSTRAINT `fk_Answer_Question`
     FOREIGN KEY (`Question_id`)
-    REFERENCES `mydb`.`Question` (`id`)
+    REFERENCES `opinio`.`Question` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Answer_Grant1`
     FOREIGN KEY (`Grant_id`)
-    REFERENCES `mydb`.`Grant` (`id`)
+    REFERENCES `opinio`.`Grant` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`State`
+-- Table `opinio`.`State`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`State` (
+CREATE TABLE IF NOT EXISTS `opinio`.`State` (
   `id` INT NOT NULL,
   `text` LONGTEXT NOT NULL,
   `type` MEDIUMTEXT NOT NULL,
@@ -140,9 +140,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Action`
+-- Table `opinio`.`Action`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Action` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Action` (
   `id` INT NOT NULL,
   `date` DATE NOT NULL,
   `Poll_id` INT NOT NULL,
@@ -155,26 +155,26 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Action` (
   INDEX `fk_Action_State1_idx` (`State_id` ASC) VISIBLE,
   CONSTRAINT `fk_Action_Poll1`
     FOREIGN KEY (`Poll_id` , `Poll_Grant_id`)
-    REFERENCES `mydb`.`Poll` (`id` , `Grant_id`)
+    REFERENCES `opinio`.`Poll` (`id` , `Grant_id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Action_Grant1`
     FOREIGN KEY (`Grant_id`)
-    REFERENCES `mydb`.`Grant` (`id`)
+    REFERENCES `opinio`.`Grant` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Action_State1`
     FOREIGN KEY (`State_id`)
-    REFERENCES `mydb`.`State` (`id`)
+    REFERENCES `opinio`.`State` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Specialty`
+-- Table `opinio`.`Specialty`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Specialty` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Specialty` (
   `id` INT NOT NULL,
   `name` MEDIUMTEXT NOT NULL,
   PRIMARY KEY (`id`))
@@ -182,9 +182,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`Qualification`
+-- Table `opinio`.`Qualification`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`Qualification` (
+CREATE TABLE IF NOT EXISTS `opinio`.`Qualification` (
   `id` INT NOT NULL,
   `level` INT NOT NULL,
   `User_id` INT NOT NULL,
@@ -194,12 +194,12 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Qualification` (
   INDEX `fk_Qualification_Specialty1_idx` (`Specialty_id` ASC) VISIBLE,
   CONSTRAINT `fk_Qualification_User1`
     FOREIGN KEY (`User_id`)
-    REFERENCES `mydb`.`User` (`id`)
+    REFERENCES `opinio`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Qualification_Specialty1`
     FOREIGN KEY (`Specialty_id`)
-    REFERENCES `mydb`.`Specialty` (`id`)
+    REFERENCES `opinio`.`Specialty` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -210,5 +210,5 @@ SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 ```
 
-- RESTfull сервіс для управління даними
+## RESTfull сервіс для управління даними
 
