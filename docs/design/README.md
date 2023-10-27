@@ -59,7 +59,7 @@
   Grant.id --* Grant
   Grant.assignedAt --* Grant 
 
-  Grant "1,1" -- "0,*" Role
+  Grant "0,*" -- "1,1" Role
 
   Qualification.id -u-* Qualification
   Qualification.level -u-* Qualification
