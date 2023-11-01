@@ -114,7 +114,7 @@
   State.text -u-* State
   State.type -u-* State
   
-  State "0,*" -u- "1,1" Action
+  State "1,1" -u- "0,*" Action
   
   User "1,1" -- "0,*" EarnedMoney
   EarnedMoney "0,*" -- "1,1" Poll
