@@ -212,6 +212,7 @@
 @enduml
 
 ## Реляційна схема
-![image](https://github.com/kujo205/db_labs/assets/45692117/8d0951ae-01c1-4e60-b805-2b946bd36642)
+![image](https://github.com/kujo205/db_labs/assets/45692117/82df78b9-e2a8-487a-b1d3-3609e8ac88bf)
+
 
 
