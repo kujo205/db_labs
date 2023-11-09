@@ -77,8 +77,8 @@ CREATE TABLE IF NOT EXISTS `opinio`.`Grant` (
   `assignedAt` DATE NOT NULL,
   `Role_id` INT NOT NULL,
   `User_id` INT NOT NULL,
-  `Answer_id` INT NULL,
-  `Answer_Question_id` INT NULL,
+  `Answer_id` INT NOT NULL,
+  `Answer_Question_id` INT NOT NULL,
   PRIMARY KEY (`id`, `Role_id`, `User_id`, `Answer_id`, `Answer_Question_id`),
   INDEX `fk_Grant_Role1_idx` (`Role_id` ASC) VISIBLE,
   INDEX `fk_Grant_User1_idx` (`User_id` ASC) VISIBLE,
@@ -110,7 +110,7 @@ CREATE TABLE IF NOT EXISTS `opinio`.`Poll` (
   `id` INT NOT NULL,
   `title` MEDIUMTEXT NOT NULL,
   `description` LONGTEXT NOT NULL,
-  `Grant_id` INT ZEROFILL NULL,
+  `Grant_id` INT ZEROFILL NOT NULL,
   PRIMARY KEY (`id`, `Grant_id`),
   INDEX `fk_Poll_Grant1_idx` (`Grant_id` ASC) VISIBLE,
   CONSTRAINT `fk_Poll_Grant1`
@@ -258,7 +258,6 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
 ```
 
 ## RESTfull сервіс для управління даними
