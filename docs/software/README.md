@@ -21,6 +21,58 @@ CREATE SCHEMA IF NOT EXISTS `opinio` DEFAULT CHARACTER SET utf8 ;
 USE `opinio` ;
 
 -- -----------------------------------------------------
+-- Table `opinio`.`Poll`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `opinio`.`Poll` ;
+
+CREATE TABLE IF NOT EXISTS `opinio`.`Poll` (
+  `id` INT NOT NULL,
+  `title` MEDIUMTEXT NOT NULL,
+  `description` LONGTEXT NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `opinio`.`Question`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `opinio`.`Question` ;
+
+CREATE TABLE IF NOT EXISTS `opinio`.`Question` (
+  `id` INT NOT NULL,
+  `type` MEDIUMTEXT NOT NULL,
+  `text` LONGTEXT NOT NULL,
+  `Poll_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `Poll_id`),
+  INDEX `fk_Question_Poll1_idx` (`Poll_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Question_Poll1`
+    FOREIGN KEY (`Poll_id`)
+    REFERENCES `opinio`.`Poll` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `opinio`.`Answer`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `opinio`.`Answer` ;
+
+CREATE TABLE IF NOT EXISTS `opinio`.`Answer` (
+  `id` INT NOT NULL,
+  `field` BLOB NOT NULL,
+  `Question_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `Question_id`),
+  INDEX `fk_Answer_Question_idx` (`Question_id` ASC) VISIBLE,
+  CONSTRAINT `fk_Answer_Question`
+    FOREIGN KEY (`Question_id`)
+    REFERENCES `opinio`.`Question` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `opinio`.`Role`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `opinio`.`Role` ;
@@ -49,25 +101,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `opinio`.`Answer`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `opinio`.`Answer` ;
-
-CREATE TABLE IF NOT EXISTS `opinio`.`Answer` (
-  `id` INT NOT NULL,
-  `field` BLOB NOT NULL,
-  `Question_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `Question_id`),
-  INDEX `fk_Answer_Question_idx` (`Question_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Answer_Question`
-    FOREIGN KEY (`Question_id`)
-    REFERENCES `opinio`.`Question` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `opinio`.`Grant`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `opinio`.`Grant` ;
@@ -79,10 +112,12 @@ CREATE TABLE IF NOT EXISTS `opinio`.`Grant` (
   `User_id` INT NOT NULL,
   `Answer_id` INT NOT NULL,
   `Answer_Question_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `Role_id`, `User_id`, `Answer_id`, `Answer_Question_id`),
+  `Poll_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `Role_id`, `User_id`, `Answer_id`, `Answer_Question_id`, `Poll_id`),
   INDEX `fk_Grant_Role1_idx` (`Role_id` ASC) VISIBLE,
   INDEX `fk_Grant_User1_idx` (`User_id` ASC) VISIBLE,
   INDEX `fk_Grant_Answer1_idx` (`Answer_id` ASC, `Answer_Question_id` ASC) VISIBLE,
+  INDEX `fk_Grant_Poll1_idx` (`Poll_id` ASC) VISIBLE,
   CONSTRAINT `fk_Grant_Role1`
     FOREIGN KEY (`Role_id`)
     REFERENCES `opinio`.`Role` (`id`)
@@ -97,43 +132,8 @@ CREATE TABLE IF NOT EXISTS `opinio`.`Grant` (
     FOREIGN KEY (`Answer_id` , `Answer_Question_id`)
     REFERENCES `opinio`.`Answer` (`id` , `Question_id`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `opinio`.`Poll`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `opinio`.`Poll` ;
-
-CREATE TABLE IF NOT EXISTS `opinio`.`Poll` (
-  `id` INT NOT NULL,
-  `title` MEDIUMTEXT NOT NULL,
-  `description` LONGTEXT NOT NULL,
-  `Grant_id` INT ZEROFILL NOT NULL,
-  PRIMARY KEY (`id`, `Grant_id`),
-  INDEX `fk_Poll_Grant1_idx` (`Grant_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Poll_Grant1`
-    FOREIGN KEY (`Grant_id`)
-    REFERENCES `opinio`.`Grant` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `opinio`.`Question`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `opinio`.`Question` ;
-
-CREATE TABLE IF NOT EXISTS `opinio`.`Question` (
-  `id` INT NOT NULL,
-  `type` MEDIUMTEXT NOT NULL,
-  `text` LONGTEXT NOT NULL,
-  `Poll_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `Poll_id`),
-  INDEX `fk_Question_Poll1_idx` (`Poll_id` ASC) VISIBLE,
-  CONSTRAINT `fk_Question_Poll1`
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Grant_Poll1`
     FOREIGN KEY (`Poll_id`)
     REFERENCES `opinio`.`Poll` (`id`)
     ON DELETE NO ACTION
@@ -163,16 +163,15 @@ CREATE TABLE IF NOT EXISTS `opinio`.`Action` (
   `id` INT NOT NULL,
   `date` DATE NOT NULL,
   `Poll_id` INT NOT NULL,
-  `Poll_Grant_id` INT ZEROFILL NOT NULL,
   `Grant_id` INT ZEROFILL NOT NULL,
   `State_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `Poll_id`, `Poll_Grant_id`, `Grant_id`, `State_id`),
-  INDEX `fk_Action_Poll1_idx` (`Poll_id` ASC, `Poll_Grant_id` ASC) VISIBLE,
+  PRIMARY KEY (`id`, `Poll_id`, `Grant_id`, `State_id`),
+  INDEX `fk_Action_Poll1_idx` (`Poll_id` ASC) VISIBLE,
   INDEX `fk_Action_Grant1_idx` (`Grant_id` ASC) VISIBLE,
   INDEX `fk_Action_State1_idx` (`State_id` ASC) VISIBLE,
   CONSTRAINT `fk_Action_Poll1`
-    FOREIGN KEY (`Poll_id` , `Poll_Grant_id`)
-    REFERENCES `opinio`.`Poll` (`id` , `Grant_id`)
+    FOREIGN KEY (`Poll_id`)
+    REFERENCES `opinio`.`Poll` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Action_Grant1`
@@ -238,18 +237,17 @@ CREATE TABLE IF NOT EXISTS `opinio`.`EarnedMoney` (
   `tookAway` TINYINT NOT NULL,
   `User_id` INT NOT NULL,
   `Poll_id` INT NOT NULL,
-  `Poll_Grant_id` INT ZEROFILL NOT NULL,
-  PRIMARY KEY (`id`, `User_id`, `Poll_id`, `Poll_Grant_id`),
+  PRIMARY KEY (`id`, `User_id`, `Poll_id`),
   INDEX `fk_EarnedMoney_User1_idx` (`User_id` ASC) VISIBLE,
-  INDEX `fk_EarnedMoney_Poll1_idx` (`Poll_id` ASC, `Poll_Grant_id` ASC) VISIBLE,
+  INDEX `fk_EarnedMoney_Poll1_idx` (`Poll_id` ASC) VISIBLE,
   CONSTRAINT `fk_EarnedMoney_User1`
     FOREIGN KEY (`User_id`)
     REFERENCES `opinio`.`User` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_EarnedMoney_Poll1`
-    FOREIGN KEY (`Poll_id` , `Poll_Grant_id`)
-    REFERENCES `opinio`.`Poll` (`id` , `Grant_id`)
+    FOREIGN KEY (`Poll_id`)
+    REFERENCES `opinio`.`Poll` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
